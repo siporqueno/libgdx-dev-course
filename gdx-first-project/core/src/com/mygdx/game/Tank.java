@@ -17,6 +17,10 @@ public class Tank {
     private Projectile projectile;
     private float scale;
 
+    public Projectile getProjectile() {
+        return projectile;
+    }
+
     public Tank() {
         this.texture = new Texture("tank.png");
         this.textureWeapon = new Texture("weapon.png");
