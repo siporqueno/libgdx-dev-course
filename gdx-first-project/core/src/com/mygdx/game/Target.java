@@ -32,7 +32,7 @@ public class Target {
         this.scale = 0.5f;
         this.speed = 100.0f;
         this.vx = speed * MathUtils.cos(0);
-        this.circle = new Circle(x, y, scale*(texture.getWidth() + texture.getHeight()) / 4.0f);
+        this.circle = new Circle(x, y, scale * (texture.getWidth() + texture.getHeight()) / 4.0f);
         this.active = true;
 
     }
@@ -59,7 +59,8 @@ public class Target {
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, x - 128, y - 128, 128, 128, 256, 256, scale, scale, 0, 0, 0, 256, 256, false, false);
+        if (this.active)
+            batch.draw(texture, x - 128, y - 128, 128, 128, 256, 256, scale, scale, 0, 0, 0, 256, 256, false, false);
     }
 
     public void dispose() {

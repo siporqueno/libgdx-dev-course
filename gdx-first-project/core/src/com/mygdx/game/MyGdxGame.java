@@ -30,7 +30,7 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         tank.render(batch);
-        if (target.isActive()) target.render(batch);
+        target.render(batch);
         batch.end();
     }
 
