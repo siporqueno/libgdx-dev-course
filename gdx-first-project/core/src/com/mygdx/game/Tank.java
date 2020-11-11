@@ -17,6 +17,10 @@ public class Tank {
     private Projectile projectile;
     private float scale;
 
+    public Projectile getProjectile() {
+        return projectile;
+    }
+
     public Tank() {
         this.texture = new Texture("tank.png");
         this.textureWeapon = new Texture("weapon.png");
@@ -28,6 +32,7 @@ public class Tank {
     }
 
     public void update(float dt) {
+
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             angle -= 90.0f * dt;
         }
@@ -41,12 +46,12 @@ public class Tank {
 //            angle += 90.0f;
 //        }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            x += speed * MathUtils.cosDeg(angle) * dt;
-            y += speed * MathUtils.sinDeg(angle) * dt;
+            if (y > 0 && y < Gdx.graphics.getHeight()) x += speed * MathUtils.cosDeg(angle) * dt;
+            if (x > 0 && x < Gdx.graphics.getWidth()) y += speed * MathUtils.sinDeg(angle) * dt;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            x -= speed * MathUtils.cosDeg(angle) * dt * 0.2f;
-            y -= speed * MathUtils.sinDeg(angle) * dt * 0.2f;
+            if (y > 0 && y < Gdx.graphics.getHeight()) x -= speed * MathUtils.cosDeg(angle) * dt * 0.2f;
+            if (x > 0 && x < Gdx.graphics.getWidth()) y -= speed * MathUtils.sinDeg(angle) * dt * 0.2f;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
             angleWeapon -= 90.0f * dt;
@@ -55,11 +60,16 @@ public class Tank {
             angleWeapon += 90.0f * dt;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !projectile.isActive()) {
-            projectile.shoot(x + 16 * scale * MathUtils.cosDeg(angle), y + 16* scale * MathUtils.sinDeg(angle), angle + angleWeapon);
+            projectile.shoot(x + 16 * scale * MathUtils.cosDeg(angle), y + 16 * scale * MathUtils.sinDeg(angle), angle + angleWeapon);
         }
         if (projectile.isActive()) {
             projectile.update(dt);
         }
+
+        if (x < 0.0f) x = 0.0f;
+        if (x > Gdx.graphics.getWidth()) x = Gdx.graphics.getWidth();
+        if (y < 0.0f) y = 0.0f;
+        if (y > Gdx.graphics.getHeight()) y = Gdx.graphics.getHeight();
     }
 
     public void render(SpriteBatch batch) {

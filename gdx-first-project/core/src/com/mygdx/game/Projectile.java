@@ -13,6 +13,14 @@ public class Projectile {
     private float speed;
     private boolean active;
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
     public boolean isActive() {
         return active;
     }
