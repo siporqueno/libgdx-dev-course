@@ -12,6 +12,7 @@ public class Hero {
     private ProjectileController projectileController;
     private Vector2 position;
     private TextureRegion texture;
+    private boolean doubleShot;
 
     public Hero(TextureAtlas atlas, ProjectileController projectileController) {
         this.position = new Vector2(100, 100);
@@ -20,8 +21,10 @@ public class Hero {
     }
 
     public void update(float dt) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) doubleShot = !doubleShot;
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             projectileController.activate(position.x, position.y, 200, 0);
+            if (doubleShot) projectileController.activate(position.x - 20, position.y, 200, 0);
         }
     }
 
