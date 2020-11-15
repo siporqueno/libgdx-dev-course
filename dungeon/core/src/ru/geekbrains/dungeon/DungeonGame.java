@@ -3,6 +3,7 @@ package ru.geekbrains.dungeon;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +12,7 @@ public class DungeonGame extends ApplicationAdapter {
     private TextureAtlas atlas;
     private TextureRegion cursorTexture;
     private SpriteBatch batch;
+    private BitmapFont font20;
     private GameController gameController;
 
     // Домашнее задания:
@@ -26,6 +28,7 @@ public class DungeonGame extends ApplicationAdapter {
         atlas = new TextureAtlas("images/game.pack");
         cursorTexture = atlas.findRegion("cursor");
         gameController = new GameController(atlas);
+        font20 = new BitmapFont(Gdx.files.internal("font20.fnt"));
     }
 
     @Override
@@ -37,7 +40,7 @@ public class DungeonGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         gameController.getGameMap().render(batch);
-        gameController.getHero().render(batch);
+        gameController.getHero().render(batch, font20);
         gameController.getMonsterController().render(batch);
         gameController.getProjectileController().render(batch);
         batch.setColor(1,1,1,0.5f);

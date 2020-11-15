@@ -1,7 +1,7 @@
 package ru.geekbrains.dungeon.units;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import ru.geekbrains.dungeon.GameController;
@@ -12,6 +12,7 @@ public class Hero extends Unit {
     float movementMaxTime;
     int targetX, targetY;
     int experience;
+    int movesToGoCounter;
 
     public Hero(TextureAtlas atlas, GameController gc) {
         super(gc, 1, 1, 10);
@@ -20,6 +21,7 @@ public class Hero extends Unit {
         this.movementMaxTime = 0.2f;
         this.targetX = cellX;
         this.targetY = cellY;
+        this.movesToGoCounter = 5;
     }
 
     public void update(float dt) {
@@ -59,12 +61,13 @@ public class Hero extends Unit {
                 movementTime = 0;
                 cellX = targetX;
                 cellY = targetY;
+                movesToGoCounter--;
+                if (movesToGoCounter == 0) movesToGoCounter = 5;
             }
         }
     }
 
-    @Override
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, BitmapFont font20) {
         float px = cellX * GameMap.CELL_SIZE;
         float py = cellY * GameMap.CELL_SIZE;
         if (!isStayStill()) {
@@ -79,5 +82,7 @@ public class Hero extends Unit {
         batch.setColor(0.0f, 1.0f, 0.0f, 1.0f);
         batch.draw(textureHp, px + 2, py + 52, (float) hp / hpMax * 56, 8);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        font20.draw(batch, "To Go: "+movesToGoCounter, px + 65, py + 40);
     }
 }
