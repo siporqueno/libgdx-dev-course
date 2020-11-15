@@ -11,6 +11,7 @@ public class Hero extends Unit {
     float movementTime;
     float movementMaxTime;
     int targetX, targetY;
+    int experience;
 
     public Hero(TextureAtlas atlas, GameController gc) {
         super(gc, 1, 1, 10);
@@ -41,7 +42,10 @@ public class Hero extends Unit {
         if (m != null) {
             targetX = cellX;
             targetY = cellY;
-            m.takeDamage(1);
+            if (m.takeDamage(1)) {
+                experience++;
+                System.out.println("Hero's experience: " + experience);
+            }
         }
 
         if (!gc.getGameMap().isCellPassable(targetX, targetY)) {
