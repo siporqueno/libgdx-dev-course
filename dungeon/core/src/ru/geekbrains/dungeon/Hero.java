@@ -58,20 +58,21 @@ public class Hero {
 
 
     public void fire() {
-        projectileController.activate(position.x, position.y, 200* MathUtils.cos(MathUtils.degRad*angle), 200*MathUtils.sin(MathUtils.degRad*angle));
-        if (doubleShot) projectileController.activate(position.x-20*MathUtils.cos(MathUtils.degRad*angle), position.y-20*MathUtils.sin(MathUtils.degRad*angle), 200* MathUtils.cos(MathUtils.degRad*angle), 200*MathUtils.sin(MathUtils.degRad*angle));
+        projectileController.activate(position.x, position.y, 200* MathUtils.cosDeg(angle), 200*MathUtils.sinDeg(angle));
+        if (doubleShot) projectileController.activate(position.x-20*MathUtils.cosDeg(angle), position.y-20*MathUtils.sinDeg(angle), 200* MathUtils.cosDeg(angle), 200*MathUtils.sinDeg(angle));
     }
 
-    public void fireWithTimer(float dt) {
+//    Так как в закомментированном методе нже делать не надо: while и другие бесконечные циклы отъедают много ресурсов
+    /*public void fireWithTimer(float dt) {
         projectileController.activate(position.x, position.y, 200* MathUtils.cos(MathUtils.degRad*angle), 200*MathUtils.sin(MathUtils.degRad*angle));
 
         if (doubleShot) {
             float secondShotTimer = 0.0f;
             while (secondShotTimer < 20.0f/200.0f) secondShotTimer = secondShotTimer + dt;
             projectileController.activate(position.x, position.y, 200* MathUtils.cos(MathUtils.degRad*angle), 200*MathUtils.sin(MathUtils.degRad*angle));}
-    }
-
+    }*/
     public void render(SpriteBatch batch) {
         batch.draw(texture, position.x - width / 2.0f, position.y - height / 2.0f, width / 2.0f, height / 2.0f, width, height, 1, 1, angle);
     }
 }
+
