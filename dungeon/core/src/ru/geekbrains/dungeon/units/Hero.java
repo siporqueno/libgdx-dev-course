@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.MathUtils;
 import ru.geekbrains.dungeon.GameController;
 import ru.geekbrains.dungeon.GameMap;
 
@@ -48,6 +49,7 @@ public class Hero extends Unit {
                 experience++;
                 System.out.println("Hero's experience: " + experience);
             }
+            if (MathUtils.random()<0.25f) this.takeDamage(1);
         }
 
         if (!gc.getGameMap().isCellPassable(targetX, targetY)) {
