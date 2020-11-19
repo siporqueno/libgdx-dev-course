@@ -7,8 +7,7 @@ import ru.geekbrains.dungeon.units.Monster;
 
 public class GameController {
     private ProjectileController projectileController;
-    private Hero hero;
-    private MonsterController monsterController;
+    private UnitController unitController;
     private GameMap gameMap;
 
     private int cursorX, cursorY;
@@ -25,33 +24,25 @@ public class GameController {
         return projectileController;
     }
 
-    public Hero getHero() {
-        return hero;
-    }
-
     public GameMap getGameMap() {
         return gameMap;
     }
 
-    public MonsterController getMonsterController() {
-        return monsterController;
+    public UnitController getUnitController() {
+        return unitController;
     }
 
     public GameController(TextureAtlas atlas) {
-        this.projectileController = new ProjectileController(atlas);
-        this.hero = new Hero(atlas, this);
-        this.monsterController = new MonsterController(this, atlas);
         this.gameMap = new GameMap(atlas);
-        this.monsterController.activate(5, 5);
-        this.monsterController.activate(8, 8);
+        this.unitController = new UnitController(this, atlas);
+        this.projectileController = new ProjectileController(atlas);
+        this.unitController.init();
     }
 
     public void update(float dt) {
         cursorX = (Gdx.input.getX() / GameMap.CELL_SIZE);
         cursorY = ((720 - Gdx.input.getY()) / GameMap.CELL_SIZE);
-
         projectileController.update(dt);
-        hero.update(dt);
-        monsterController.update(dt);
+        unitController.update(dt);
     }
 }

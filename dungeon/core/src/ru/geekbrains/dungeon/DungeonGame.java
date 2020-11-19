@@ -15,10 +15,9 @@ public class DungeonGame extends ApplicationAdapter {
 
     // Домашнее задания:
     // 1. Разорабаться с кодом;
-    // 2. Добавить герою параметр опыт, при уничтожении монстра опыт должен повыситься на 1;
-    // 3. Добавьте счетчик ходов (5 штук), отобразите его возле персонада, каждый шаг
-    // уменьшает счетчик, как только он падает до нуля, то сразу же восстанаваливается;
-    // 4. * С вероятностью 25% монстр может стукнуть в ответ;
+    // 2. Монстры охотятся за героем, только если он находится в радиусе N клеток (пусть 5),
+    // в противном случае, бегают на случайную клетку
+    // > Если п. 2 окажется сложным - можете скинуть в дз пачку вопросов, что не ясно
 
     @Override
     public void create() {
@@ -37,8 +36,7 @@ public class DungeonGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         gameController.getGameMap().render(batch);
-        gameController.getHero().render(batch);
-        gameController.getMonsterController().render(batch);
+        gameController.getUnitController().render(batch);
         gameController.getProjectileController().render(batch);
         batch.setColor(1,1,1,0.5f);
         batch.draw(cursorTexture, gameController.getCursorX() * GameMap.CELL_SIZE, gameController.getCursorY() * GameMap.CELL_SIZE);
