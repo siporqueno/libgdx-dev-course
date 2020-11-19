@@ -41,11 +41,16 @@ public class Hero extends Unit {
             }
         }
 
+// Moves are deducted not only for movement, but also when monster is hit by Hero. Revised code below accordingly after its revision during Lesson 4 on 18 November 2020 (minute 7).
         Monster m = gc.getMonsterController().getMonsterInCell(targetX, targetY);
         if (m != null) {
+            boolean isDead = false;
             targetX = cellX;
             targetY = cellY;
-            if (m.takeDamage(1)) {
+            isDead = m.takeDamage(1);
+            movesToGoCounter--;
+            if (movesToGoCounter == 0) movesToGoCounter = 5;
+            if (isDead) {
                 experience++;
                 System.out.println("Hero's experience: " + experience);
             }
