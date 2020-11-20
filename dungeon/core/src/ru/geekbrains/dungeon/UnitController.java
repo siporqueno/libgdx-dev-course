@@ -26,19 +26,6 @@ public class UnitController {
         return hero;
     }
 
-    public boolean isItMyTurn(Unit unit) {
-        return currentUnit == unit;
-    }
-
-    public boolean isCellFree(int cellX, int cellY) {
-        for (Unit u : allUnits) {
-            if (u.getCellX() == cellX && u.getCellY() == cellY) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public UnitController(GameController gc, TextureAtlas atlas) {
         this.gc = gc;
         this.hero = new Hero(atlas, gc);
@@ -57,6 +44,19 @@ public class UnitController {
             }
         }
         this.nextTurn();
+    }
+
+    public boolean isItMyTurn(Unit unit) {
+        return currentUnit == unit;
+    }
+
+    public boolean isCellFree(int cellX, int cellY) {
+        for (Unit u : allUnits) {
+            if (u.getCellX() == cellX && u.getCellY() == cellY) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void nextTurn() {
