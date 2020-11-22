@@ -13,6 +13,7 @@ public class UnitController {
     private Unit currentUnit;
     private int index;
     private List<Unit> allUnits;
+    private int roundNo;
 
     public MonsterController getMonsterController() {
         return monsterController;
@@ -58,6 +59,8 @@ public class UnitController {
         }
         currentUnit = allUnits.get(index);
         currentUnit.startTurn();
+        if (currentUnit.equals(hero) && allUnits.size() != 1) System.out.println(++roundNo);
+
     }
 
     public void render(SpriteBatch batch, BitmapFont font18) {
