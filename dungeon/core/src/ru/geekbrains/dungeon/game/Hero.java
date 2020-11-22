@@ -1,6 +1,7 @@
 package ru.geekbrains.dungeon.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import ru.geekbrains.dungeon.helpers.Assets;
 import ru.geekbrains.dungeon.game.GameController;
 
@@ -15,7 +16,6 @@ public class Hero extends Unit {
         this.hp = this.hpMax;
         this.texture = Assets.getInstance().getAtlas().findRegion("knight");
         this.textureHp = Assets.getInstance().getAtlas().findRegion("hp");
-        this.coins = 100;
     }
 
     public void update(float dt) {
@@ -24,6 +24,7 @@ public class Hero extends Unit {
             Monster m = gc.getUnitController().getMonsterController().getMonsterInCell(gc.getCursorX(), gc.getCursorY());
             if (m != null && canIAttackThisTarget(m)) {
                 attack(m);
+                if (!m.isActive()) coins += MathUtils.random(1,3);
             } else {
                 goTo(gc.getCursorX(), gc.getCursorY());
             }
