@@ -1,7 +1,6 @@
-package ru.geekbrains.dungeon;
+package ru.geekbrains.dungeon.game;
 
 import com.badlogic.gdx.math.MathUtils;
-import ru.geekbrains.dungeon.units.Unit;
 
 public class BattleCalc {
     public static int attack(Unit attacker, Unit target) {

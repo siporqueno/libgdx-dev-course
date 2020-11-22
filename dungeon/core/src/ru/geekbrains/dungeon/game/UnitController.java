@@ -1,13 +1,9 @@
-package ru.geekbrains.dungeon;
+package ru.geekbrains.dungeon.game;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import ru.geekbrains.dungeon.units.Hero;
-import ru.geekbrains.dungeon.units.Monster;
-import ru.geekbrains.dungeon.units.Unit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class UnitController {
@@ -39,10 +35,10 @@ public class UnitController {
         return true;
     }
 
-    public UnitController(GameController gc, TextureAtlas atlas) {
+    public UnitController(GameController gc) {
         this.gc = gc;
-        this.hero = new Hero(atlas, gc);
-        this.monsterController = new MonsterController(gc, atlas);
+        this.hero = new Hero(gc);
+        this.monsterController = new MonsterController(gc);
     }
 
     public void init() {
@@ -51,11 +47,7 @@ public class UnitController {
         this.index = -1;
         this.allUnits = new ArrayList<>();
         this.allUnits.add(hero);
-        for (Monster m : monsterController.getMonsters()) {
-            if (m.isActive()) {
-                this.allUnits.add(m);
-            }
-        }
+        this.allUnits.addAll(monsterController.getActiveList());
         this.nextTurn();
     }
 
@@ -68,9 +60,9 @@ public class UnitController {
         currentUnit.startTurn();
     }
 
-    public void render(SpriteBatch batch) {
-        hero.render(batch);
-        monsterController.render(batch);
+    public void render(SpriteBatch batch, BitmapFont font18) {
+        hero.render(batch, font18);
+        monsterController.render(batch, font18);
     }
 
     public void update(float dt) {

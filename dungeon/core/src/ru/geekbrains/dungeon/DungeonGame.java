@@ -1,52 +1,46 @@
 package ru.geekbrains.dungeon;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ru.geekbrains.dungeon.game.GameController;
+import ru.geekbrains.dungeon.game.GameMap;
+import ru.geekbrains.dungeon.helpers.Assets;
+import ru.geekbrains.dungeon.screens.ScreenManager;
 
-public class DungeonGame extends ApplicationAdapter {
-    private TextureAtlas atlas;
-    private TextureRegion cursorTexture;
+public class DungeonGame extends Game {
     private SpriteBatch batch;
-    private GameController gameController;
 
-    // Домашнее задания:
-    // 1. Разорабаться с кодом;
-    // 2. Монстры охотятся за героем, только если он находится в радиусе N клеток (пусть 5),
-    // в противном случае, бегают на случайную клетку
-    // > Если п. 2 окажется сложным - можете скинуть в дз пачку вопросов, что не ясно
+    // Домашнее задание:
+    // 1. Разобраться с кодом ( в пакете ru.geekbrains.dungeon.game )
+    // 2. Необходимо вывести на экран: имя персонажа, количество монет
+    // 3. Если жизнь персонажа 100% то полоска жизни должна отрисовываться с альфа 0.2
+    // 4. При убийстве монстра персонаж может получить 1-3 монеты
+    // 5. Попробуйте посчитать раунды ( каждый раз, когда ход переходит к игроку
+    // номер раунда должен увеличиваться )
+    // 6. В начале 3 раунда должен появиться новый монстр ( * каждого третьего )
+    // 7. В начале хода персонажи восстанавливают 1 хп
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        atlas = new TextureAtlas("images/game.pack");
-        cursorTexture = atlas.findRegion("cursor");
-        gameController = new GameController(atlas);
+        ScreenManager.getInstance().init(this, batch);
+        ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.GAME);
     }
 
     @Override
     public void render() {
-        float dt = Gdx.graphics.getDeltaTime();
-        gameController.update(dt);
-
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        gameController.getGameMap().render(batch);
-        gameController.getUnitController().render(batch);
-        gameController.getProjectileController().render(batch);
-        batch.setColor(1,1,1,0.5f);
-        batch.draw(cursorTexture, gameController.getCursorX() * GameMap.CELL_SIZE, gameController.getCursorY() * GameMap.CELL_SIZE);
-        batch.setColor(1,1,1,1);
-        batch.end();
+        float dt = Gdx.graphics.getDeltaTime();
+        getScreen().render(dt);
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-        atlas.dispose();
     }
 }

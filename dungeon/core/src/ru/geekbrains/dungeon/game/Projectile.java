@@ -1,16 +1,18 @@
-package ru.geekbrains.dungeon;
+package ru.geekbrains.dungeon.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import ru.geekbrains.dungeon.helpers.Poolable;
 
-public class Projectile {
+public class Projectile implements Poolable {
     private TextureRegion texture;
     private Vector2 position;
     private Vector2 velocity;
     private boolean active;
 
+    @Override
     public boolean isActive() {
         return active;
     }
