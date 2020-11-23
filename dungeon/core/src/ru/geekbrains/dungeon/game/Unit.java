@@ -57,7 +57,7 @@ public abstract class Unit implements Poolable {
 
     public void startTurn() {
         turns = maxTurns;
-        hp++;
+        if (hp<hpMax)hp++;
     }
 
     @Override
