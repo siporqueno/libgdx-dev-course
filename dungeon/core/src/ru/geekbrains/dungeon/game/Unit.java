@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import ru.geekbrains.dungeon.helpers.Poolable;
 
 @Data
@@ -29,6 +27,7 @@ public abstract class Unit implements Poolable {
     float innerTimer;
     StringBuilder stringHelper;
     int steps, attacks;
+    float inactivityTime;
 
     public Unit(GameController gc, int cellX, int cellY, int hpMax) {
         this.gc = gc;
@@ -60,9 +59,10 @@ public abstract class Unit implements Poolable {
     }
 
     public void startTurn() {
-        turns = maxTurns;
-        this.steps = MathUtils.random(1, 4);
-        this.attacks = MathUtils.random(1, 4);
+//        turns = maxTurns;
+        steps = MathUtils.random(1, 4);
+        attacks = MathUtils.random(1, 4);
+        inactivityTime = 0;
     }
 
     public void startRound() {
@@ -84,7 +84,7 @@ public abstract class Unit implements Poolable {
     }
 
     public boolean canIMakeAction() {
-        return gc.getUnitController().isItMyTurn(this) && turns > 0 && isStayStill();
+        return gc.getUnitController().isItMyTurn(this) && /*turns > 0*/attacks + steps > 0 && isStayStill();
     }
 
     public boolean isStayStill() {
@@ -109,20 +109,34 @@ public abstract class Unit implements Poolable {
     public void attack(Unit target) {
         target.takeDamage(this, BattleCalc.attack(this, target));
         this.takeDamage(target, BattleCalc.checkCounterAttack(this, target));
-        turns--;
+//        turns--;
+        attacks--;
+        inactivityTime = 0;
     }
 
     public void update(float dt) {
         innerTimer += dt;
+        inactivityTime += dt;
+
         if (!isStayStill()) {
             movementTime += dt;
             if (movementTime > movementMaxTime) {
                 movementTime = 0;
                 cellX = targetX;
                 cellY = targetY;
-                turns--;
+//                turns--;
+                steps--;
+                inactivityTime = 0;
             }
         }
+// Посредством inactivityTime выясняется, что персонаж не хочет/не может ходить или атаковать.
+// При каждом шаге/ атаке inactivityTime сбрасывается в 0
+// Если inactivityTime превышает предел, указанный в условии ниже, шаги и атаки обнуляются и это приводит к переходу хода
+        if (inactivityTime >= 3.0f) {
+            steps = 0;
+            attacks = 0;
+        }
+
     }
 
     public void render(SpriteBatch batch, BitmapFont font18) {
@@ -153,6 +167,12 @@ public abstract class Unit implements Poolable {
 
         font18.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        if (gc.getUnitController().isItMyTurn(this)) {
+            stringHelper.setLength(0);
+            stringHelper.append("S ").append(steps).append(" A ").append(attacks);
+            font18.draw(batch, stringHelper, px, py + 90);
+        }
     }
 
 

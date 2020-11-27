@@ -41,15 +41,17 @@ public class Monster extends Unit {
     }
 
     public void think(float dt) {
-        if (canIAttackThisTarget(target)) {
+        if (canIAttackThisTarget(target) && attacks > 0) {
             attack(target);
             return;
         }
         if (amIBlocked()) {
-            turns = 0;
+//            turns = 0;
+            steps = 0;
+            attacks = 0;
             return;
         }
-        if (Utils.getCellsIntDistance(cellX, cellY, target.getCellX(), target.getCellY()) < 5) {
+        if (Utils.getCellsIntDistance(cellX, cellY, target.getCellX(), target.getCellY()) < 5 && steps > 0) {
             tryToMove(target.getCellX(), target.getCellY());
         } else {
             int dx, dy;
@@ -57,7 +59,9 @@ public class Monster extends Unit {
                 dx = MathUtils.random(0, gc.getGameMap().getCellsX() - 1);
                 dy = MathUtils.random(0, gc.getGameMap().getCellsY() - 1);
             } while (!(gc.isCellEmpty(dx, dy) && Utils.isCellsAreNeighbours(cellX, cellY, dx, dy)));
-            tryToMove(dx, dy);
+            if (steps > 0) {
+                tryToMove(dx, dy);
+            }
         }
     }
 

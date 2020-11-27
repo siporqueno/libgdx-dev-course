@@ -24,9 +24,9 @@ public class Hero extends Unit {
         super.update(dt);
         if (Gdx.input.justTouched() && canIMakeAction()) {
             Monster m = gc.getUnitController().getMonsterController().getMonsterInCell(gc.getCursorX(), gc.getCursorY());
-            if (m != null && canIAttackThisTarget(m)) {
+            if (m != null && canIAttackThisTarget(m) && attacks > 0) {
                 attack(m);
-            } else {
+            } else if (steps > 0) {
                 goTo(gc.getCursorX(), gc.getCursorY());
             }
         }
