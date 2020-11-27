@@ -28,6 +28,7 @@ public abstract class Unit implements Poolable {
     int turns, maxTurns;
     float innerTimer;
     StringBuilder stringHelper;
+    int steps, attacks;
 
     public Unit(GameController gc, int cellX, int cellY, int hpMax) {
         this.gc = gc;
@@ -45,6 +46,8 @@ public abstract class Unit implements Poolable {
         this.innerTimer = MathUtils.random(1000.0f);
         this.stringHelper = new StringBuilder();
         this.gold = MathUtils.random(1, 5);
+        this.steps = MathUtils.random(1, 4);
+        this.attacks = MathUtils.random(1, 4);
     }
 
     public void addGold(int amount) {
