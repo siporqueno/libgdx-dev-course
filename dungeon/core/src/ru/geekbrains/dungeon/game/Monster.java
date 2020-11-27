@@ -16,7 +16,7 @@ public class Monster extends Unit {
         this.hp = -1;
     }
 
-    public void activate(int cellX, int cellY) {
+    public Monster activate(int cellX, int cellY) {
         this.cellX = cellX;
         this.cellY = cellY;
         this.targetX = cellX;
@@ -24,6 +24,7 @@ public class Monster extends Unit {
         this.hpMax = 10;
         this.hp = hpMax;
         this.target = gc.getUnitController().getHero();
+        return this;
     }
 
     public void update(float dt) {
@@ -55,7 +56,7 @@ public class Monster extends Unit {
             do {
                 dx = MathUtils.random(0, gc.getGameMap().getCellsX() - 1);
                 dy = MathUtils.random(0, gc.getGameMap().getCellsY() - 1);
-            } while (!(isCellEmpty(dx, dy) && Utils.isCellsAreNeighbours(cellX, cellY, dx, dy)));
+            } while (!(gc.isCellEmpty(dx, dy) && Utils.isCellsAreNeighbours(cellX, cellY, dx, dy)));
             tryToMove(dx, dy);
         }
     }
@@ -65,7 +66,7 @@ public class Monster extends Unit {
         float bestDst = 10000;
         for (int i = cellX - 1; i <= cellX + 1; i++) {
             for (int j = cellY - 1; j <= cellY + 1; j++) {
-                if (Utils.isCellsAreNeighbours(cellX, cellY, i, j) && isCellEmpty(i, j)) {
+                if (Utils.isCellsAreNeighbours(cellX, cellY, i, j) && gc.isCellEmpty(i, j)) {
                     float dst = Utils.getCellsFloatDistance(preferedX, preferedY, i, j);
                     if (dst < bestDst) {
                         bestDst = dst;
