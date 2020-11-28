@@ -13,10 +13,12 @@ public class GameMap {
     private class Cell {
         CellType type;
         int index;
+        boolean visible;
 
         public Cell() {
             type = CellType.GRASS;
             index = 0;
+            visible = false;
         }
 
         public void changeType(CellType to) {
@@ -51,7 +53,7 @@ public class GameMap {
                 this.data[i][j] = new Cell();
             }
         }
-        int treesCount = (int)((CELLS_X * CELLS_Y * FOREST_PERCENTAGE) / 100.0f);
+        int treesCount = (int) ((CELLS_X * CELLS_Y * FOREST_PERCENTAGE) / 100.0f);
         for (int i = 0; i < treesCount; i++) {
             this.data[MathUtils.random(0, CELLS_X - 1)][MathUtils.random(0, CELLS_Y - 1)].changeType(CellType.TREE);
 
@@ -74,11 +76,17 @@ public class GameMap {
     public void render(SpriteBatch batch) {
         for (int i = 0; i < CELLS_X; i++) {
             for (int j = CELLS_Y - 1; j >= 0; j--) {
-                batch.draw(grassTexture, i * CELL_SIZE, j * CELL_SIZE);
-                if (data[i][j].type == CellType.TREE) {
-                    batch.draw(treesTextures[data[i][j].index], i * CELL_SIZE, j * CELL_SIZE);
+                if (data[i][j].visible) {
+                    batch.draw(grassTexture, i * CELL_SIZE, j * CELL_SIZE);
+                    if (data[i][j].type == CellType.TREE) {
+                        batch.draw(treesTextures[data[i][j].index], i * CELL_SIZE, j * CELL_SIZE);
+                    }
                 }
             }
         }
+    }
+
+    public void makeCellVisible(int cellX, int cellY) {
+        data[cellX][cellY].visible = true;
     }
 }

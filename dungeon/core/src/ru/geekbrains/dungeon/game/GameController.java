@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Data;
+import ru.geekbrains.dungeon.helpers.Utils;
 import ru.geekbrains.dungeon.screens.ScreenManager;
 
 @Data
@@ -32,6 +33,7 @@ public class GameController {
         this.projectileController = new ProjectileController();
         this.unitController.init(INITIAL_MONSTERS_COUNT);
         this.round = 1;
+        clearFogOfWar();
     }
 
     public void roundUp() {
@@ -50,6 +52,7 @@ public class GameController {
         checkMouse();
         projectileController.update(dt);
         unitController.update(dt);
+        clearFogOfWar();
     }
 
     public void checkMouse() {
@@ -73,5 +76,20 @@ public class GameController {
         cursorY = (int) (mouse.y / GameMap.CELL_SIZE);
 
         pressedMouse.set(mouse);
+    }
+
+    public void clearFogOfWar() {
+        for (int i = 0; i < GameMap.CELLS_X; i++) {
+            for (int j = GameMap.CELLS_Y - 1; j >= 0; j--) {
+                if (Utils.getCellsIntDistance(i, j, unitController.getHero().cellX, unitController.getHero().cellY) <= 5) {
+                    gameMap.makeCellVisible(i, j);
+                }
+            }
+        }
+        for (int i = 0; i < unitController.getAllUnits().size() - 1; i++) {
+            if (Utils.getCellsIntDistance(unitController.getAllUnits().get(i).cellX, unitController.getAllUnits().get(i).cellY, unitController.getHero().cellX, unitController.getHero().cellY) <= 5) {
+                unitController.getAllUnits().get(i).visible = true;
+            }
+        }
     }
 }

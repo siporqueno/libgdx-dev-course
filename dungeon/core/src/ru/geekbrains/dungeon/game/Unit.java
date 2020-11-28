@@ -28,6 +28,7 @@ public abstract class Unit implements Poolable {
     StringBuilder stringHelper;
     int steps, attacks;
     float inactivityTime;
+    boolean visible;
 
     public Unit(GameController gc, int cellX, int cellY, int hpMax) {
         this.gc = gc;
@@ -151,28 +152,30 @@ public abstract class Unit implements Poolable {
             py = cellY * GameMap.CELL_SIZE + (targetY - cellY) * (movementTime / movementMaxTime) * GameMap.CELL_SIZE;
         }
 
-        batch.draw(texture, px, py);
-        batch.setColor(0.0f, 0.0f, 0.0f, hpAlpha);
+        if (visible) {
+            batch.draw(texture, px, py);
+            batch.setColor(0.0f, 0.0f, 0.0f, hpAlpha);
 
-        float barX = px, barY = py + MathUtils.sin(innerTimer * 5.0f) * 2;
-        batch.draw(textureHp, barX + 1, barY + 51, 58, 10);
-        batch.setColor(0.7f, 0.0f, 0.0f, hpAlpha);
-        batch.draw(textureHp, barX + 2, barY + 52, 56, 8);
-        batch.setColor(0.0f, 1.0f, 0.0f, hpAlpha);
-        batch.draw(textureHp, barX + 2, barY + 52, (float) hp / hpMax * 56, 8);
-        batch.setColor(1.0f, 1.0f, 1.0f, hpAlpha);
-        stringHelper.setLength(0);
-        stringHelper.append(hp);
-        font18.setColor(1.0f, 1.0f, 1.0f, hpAlpha);
-        font18.draw(batch, stringHelper, barX, barY + 64, 60, 1, false);
-
-        font18.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-        if (gc.getUnitController().isItMyTurn(this)) {
+            float barX = px, barY = py + MathUtils.sin(innerTimer * 5.0f) * 2;
+            batch.draw(textureHp, barX + 1, barY + 51, 58, 10);
+            batch.setColor(0.7f, 0.0f, 0.0f, hpAlpha);
+            batch.draw(textureHp, barX + 2, barY + 52, 56, 8);
+            batch.setColor(0.0f, 1.0f, 0.0f, hpAlpha);
+            batch.draw(textureHp, barX + 2, barY + 52, (float) hp / hpMax * 56, 8);
+            batch.setColor(1.0f, 1.0f, 1.0f, hpAlpha);
             stringHelper.setLength(0);
-            stringHelper.append("S ").append(steps).append(" A ").append(attacks);
-            font18.draw(batch, stringHelper, px, py + 90);
+            stringHelper.append(hp);
+            font18.setColor(1.0f, 1.0f, 1.0f, hpAlpha);
+            font18.draw(batch, stringHelper, barX, barY + 64, 60, 1, false);
+
+            font18.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+            batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+            if (gc.getUnitController().isItMyTurn(this)) {
+                stringHelper.setLength(0);
+                stringHelper.append("S ").append(steps).append(" A ").append(attacks);
+                font18.draw(batch, stringHelper, px, py + 90);
+            }
         }
     }
 

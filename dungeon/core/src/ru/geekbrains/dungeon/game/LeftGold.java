@@ -21,7 +21,7 @@ public class LeftGold implements Poolable {
 
     @Override
     public boolean isActive() {
-        return gold >0;
+        return gold > 0;
     }
 
     public void activate(int cellX, int cellY, int gold) {

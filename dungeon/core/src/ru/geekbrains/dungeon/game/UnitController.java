@@ -48,7 +48,6 @@ public class UnitController {
         }
         this.index = -1;
         this.nextTurn();
-//        this.leftGold.activate(10, 10, 3);
     }
 
     public void startRound() {
