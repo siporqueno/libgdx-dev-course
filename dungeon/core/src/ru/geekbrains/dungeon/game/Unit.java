@@ -78,7 +78,8 @@ public abstract class Unit implements Poolable {
         hp -= amount;
         if (hp <= 0) {
             gc.getUnitController().removeUnitAfterDeath(this);
-            source.addGold(this.gold);
+//            source.addGold(this.gold);
+            gc.getUnitController().getLeftGold().activate(cellX, cellY, this.gold);
         }
         return hp <= 0;
     }

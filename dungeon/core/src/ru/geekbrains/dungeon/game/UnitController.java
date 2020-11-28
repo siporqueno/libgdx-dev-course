@@ -17,6 +17,7 @@ public class UnitController {
     private Unit currentUnit;
     private int index;
     private List<Unit> allUnits;
+    private LeftGold leftGold;
 
     public boolean isItMyTurn(Unit unit) {
         return currentUnit == unit;
@@ -37,6 +38,7 @@ public class UnitController {
         this.allUnits = new ArrayList<>();
         this.hero = new Hero(gc);
         this.monsterController = new MonsterController(gc);
+        this.leftGold=new LeftGold(gc);
     }
 
     public void init(int monsterCount) {
@@ -46,6 +48,7 @@ public class UnitController {
         }
         this.index = -1;
         this.nextTurn();
+//        this.leftGold.activate(10, 10, 3);
     }
 
     public void startRound() {
@@ -67,6 +70,7 @@ public class UnitController {
     public void render(SpriteBatch batch, BitmapFont font18) {
         hero.render(batch, font18);
         monsterController.render(batch, font18);
+        leftGold.render(batch);
     }
 
     public void update(float dt) {
@@ -76,6 +80,8 @@ public class UnitController {
         if (!currentUnit.isActive() || /*currentUnit.getTurns() == 0*/ currentUnit.getAttacks() + currentUnit.getSteps() == 0) {
             nextTurn();
         }
+
+        collectLeftGold();
     }
 
     public void removeUnitAfterDeath(Unit unit) {
@@ -99,5 +105,12 @@ public class UnitController {
     public void createMonster(int cellX, int cellY) {
         Monster m = monsterController.activate(cellX, cellY);
         allUnits.add(m);
+    }
+
+    public void collectLeftGold(){
+        if (currentUnit.cellX==leftGold.getCellX() && currentUnit.cellY==leftGold.getCellY() && leftGold.isActive()) {
+            currentUnit.addGold(leftGold.getGold());
+            leftGold.setGold(0);
+        }
     }
 }
