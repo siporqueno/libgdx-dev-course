@@ -193,6 +193,12 @@ public abstract class Unit implements Poolable {
             font18.draw(batch, stringHelper, barX, barY + 80, 60, 1, false);
         }
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        if (cellX == gc.getCursorX() && cellY == gc.getCursorY()) {
+            stringHelper.setLength(0);
+            stringHelper.append("MP: ").append(stats.movePoints).append(" AP: ").append(stats.attackPoints).append(" Gold: ").append(gold);
+            font18.draw(batch, stringHelper, barX + 100, barY + 80, 60, 1, false);
+        }
     }
 
 
