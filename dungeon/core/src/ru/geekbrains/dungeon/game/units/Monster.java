@@ -49,7 +49,7 @@ public class Monster extends Unit {
             }
             return;
         }
-        if (stats.movePoints == 0) {
+        if (!doIHaveEnoughPointsToMoveAtAll()/*stats.movePoints == 0*/) {
             stats.resetPoints();
         }
         if (amIBlocked()) {
@@ -73,7 +73,7 @@ public class Monster extends Unit {
         float bestDst = 10000;
         for (int i = cellX - 1; i <= cellX + 1; i++) {
             for (int j = cellY - 1; j <= cellY + 1; j++) {
-                if (Utils.isCellsAreNeighbours(cellX, cellY, i, j) && gc.isCellEmpty(i, j)) {
+                if (Utils.isCellsAreNeighbours(cellX, cellY, i, j) && gc.isCellEmpty(i, j) && stats.getMovePoints()>=gc.getGameMap().cellStepCost(i,j)) {
                     float dst = Utils.getCellsFloatDistance(preferedX, preferedY, i, j);
                     if (dst < bestDst) {
                         bestDst = dst;

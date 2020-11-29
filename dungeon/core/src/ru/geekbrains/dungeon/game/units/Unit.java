@@ -122,7 +122,7 @@ public abstract class Unit implements Poolable {
         if (!gc.getGameMap().isCellPassable(argCellX, argCellY) || !gc.getUnitController().isCellFree(argCellX, argCellY)) {
             return;
         }
-        if (stats.movePoints > 0 && Math.abs(argCellX - cellX) + Math.abs(argCellY - cellY) == 1) {
+        if (stats.movePoints >= gc.getGameMap().cellStepCost(argCellX, argCellY) /*0*/ && Math.abs(argCellX - cellX) + Math.abs(argCellY - cellY) == 1) {
             targetX = argCellX;
             targetY = argCellY;
             currentDirection = Direction.getMoveDirection(cellX, cellY, targetX, targetY);
@@ -152,7 +152,8 @@ public abstract class Unit implements Poolable {
                 movementTime = 0;
                 cellX = targetX;
                 cellY = targetY;
-                stats.movePoints--;
+//                stats.movePoints--;
+                stats.movePoints -= gc.getGameMap().cellStepCost(cellX, cellY);
                 gc.getGameMap().checkAndTakeDrop(this);
             }
         }
@@ -197,5 +198,12 @@ public abstract class Unit implements Poolable {
 
     public boolean amIBlocked() {
         return !(gc.isCellEmpty(cellX - 1, cellY) || gc.isCellEmpty(cellX + 1, cellY) || gc.isCellEmpty(cellX, cellY - 1) || gc.isCellEmpty(cellX, cellY + 1));
+    }
+
+    public boolean doIHaveEnoughPointsToMoveAtAll() {
+        return cellX - 1 >= 0 && stats.getMovePoints() >= gc.getGameMap().cellStepCost(cellX - 1, cellY) ||
+                cellX + 1 < gc.getGameMap().getCellsX() && stats.getMovePoints() >= gc.getGameMap().cellStepCost(cellX + 1, cellY) ||
+                cellY - 1 >= 0 && stats.getMovePoints() >= gc.getGameMap().cellStepCost(cellX, cellY - 1) ||
+                cellY + 1 < gc.getGameMap().getCellsY() && stats.getMovePoints() >= gc.getGameMap().cellStepCost(cellX, cellY + 1);
     }
 }

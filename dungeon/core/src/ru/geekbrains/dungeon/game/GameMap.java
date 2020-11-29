@@ -15,11 +15,22 @@ public class GameMap {
         NONE, GOLD
     }
 
+    public enum TerrainType {
+        PLAIN(1), HILL(2), MOUNTAIN(3);
+
+        int stepCost;
+
+        TerrainType(int stepCost) {
+            this.stepCost = stepCost;
+        }
+    }
+
     private class Cell {
         CellType type;
 
         DropType dropType;
         int dropPower;
+        TerrainType terrainType;
 
         int index;
 
@@ -27,6 +38,7 @@ public class GameMap {
             type = CellType.GRASS;
             dropType = DropType.NONE;
             index = 0;
+            terrainType = (MathUtils.random() < 0.25f) ? TerrainType.HILL : TerrainType.PLAIN;
         }
 
         public void changeType(CellType to) {
@@ -86,7 +98,13 @@ public class GameMap {
     public void render(SpriteBatch batch) {
         for (int i = 0; i < CELLS_X; i++) {
             for (int j = CELLS_Y - 1; j >= 0; j--) {
-                batch.draw(grassTexture, i * CELL_SIZE, j * CELL_SIZE);
+                if (data[i][j].terrainType == TerrainType.PLAIN) {
+                    batch.draw(grassTexture, i * CELL_SIZE, j * CELL_SIZE);
+                } else {
+                    batch.setColor(0, 0.30f, 0, 1);
+                    batch.draw(grassTexture, i * CELL_SIZE, j * CELL_SIZE);
+                    batch.setColor(1, 1, 1, 1);
+                }
                 if (data[i][j].type == CellType.TREE) {
                     batch.draw(treesTextures[data[i][j].index], i * CELL_SIZE, j * CELL_SIZE);
                 }
@@ -124,5 +142,9 @@ public class GameMap {
         }
         currentCell.dropType = DropType.NONE;
         currentCell.dropPower = 0;
+    }
+
+    public int cellStepCost(int cellX, int cellY) {
+        return data[cellX][cellY].terrainType.stepCost;
     }
 }
