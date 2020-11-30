@@ -1,6 +1,7 @@
 package ru.geekbrains.dungeon.game.units;
 
 import com.badlogic.gdx.math.MathUtils;
+import ru.geekbrains.dungeon.game.Armour;
 import ru.geekbrains.dungeon.game.Weapon;
 import ru.geekbrains.dungeon.helpers.Assets;
 import ru.geekbrains.dungeon.game.GameController;
@@ -15,6 +16,7 @@ public class Monster extends Unit {
         this.textureHp = Assets.getInstance().getAtlas().findRegion("hp");
         this.stats.hp = -1;
         this.weapon = new Weapon(Weapon.Type.SWORD, 2, 1);
+        this.armour = new Armour(Armour.Type.CHAIN_ARMOUR, new int[]{1, 1, 0, 0, 0});
     }
 
     public Monster activate(int cellX, int cellY) {
@@ -73,7 +75,7 @@ public class Monster extends Unit {
         float bestDst = 10000;
         for (int i = cellX - 1; i <= cellX + 1; i++) {
             for (int j = cellY - 1; j <= cellY + 1; j++) {
-                if (Utils.isCellsAreNeighbours(cellX, cellY, i, j) && gc.isCellEmpty(i, j) && stats.getMovePoints()>=gc.getGameMap().cellStepCost(i,j)) {
+                if (Utils.isCellsAreNeighbours(cellX, cellY, i, j) && gc.isCellEmpty(i, j) && stats.getMovePoints() >= gc.getGameMap().cellStepCost(i, j)) {
                     float dst = Utils.getCellsFloatDistance(preferedX, preferedY, i, j);
                     if (dst < bestDst) {
                         bestDst = dst;

@@ -5,12 +5,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import lombok.Data;
-import ru.geekbrains.dungeon.game.BattleCalc;
-import ru.geekbrains.dungeon.game.GameController;
-import ru.geekbrains.dungeon.game.GameMap;
-import ru.geekbrains.dungeon.game.Weapon;
+import ru.geekbrains.dungeon.game.*;
 import ru.geekbrains.dungeon.helpers.Assets;
 import ru.geekbrains.dungeon.helpers.Poolable;
+
+import java.util.Arrays;
 
 @Data
 public abstract class Unit implements Poolable {
@@ -56,6 +55,7 @@ public abstract class Unit implements Poolable {
     float movementMaxTime;
     int targetX, targetY;
     Weapon weapon;
+    Armour armour;
 
     float innerTimer;
     StringBuilder stringHelper;
@@ -200,8 +200,8 @@ public abstract class Unit implements Poolable {
                     .append("MP: ").append(stats.movePoints).append("\n")
                     .append("AP: ").append(stats.attackPoints).append("\n")
                     .append("Gold: ").append(gold).append("\n")
-                    .append("Weapon: ").append(this.weapon.getType()).append("\n")
-                    .append("Armour: ").append("To do");
+                    .append("Weapon: ").append(this.weapon.getType()).append(" ").append(this.weapon.getDamage()).append("\n")
+                    .append("Armour: ").append(this.armour.getType()).append(" ").append(Arrays.toString(this.armour.getResistance()));
             font18.draw(batch, stringHelper, barX + 100, barY + 80, 60, 1, false);
         }
     }

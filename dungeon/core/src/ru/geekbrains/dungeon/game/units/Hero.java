@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import ru.geekbrains.dungeon.game.Armour;
 import ru.geekbrains.dungeon.game.Weapon;
 import ru.geekbrains.dungeon.helpers.Assets;
 import ru.geekbrains.dungeon.game.GameController;
@@ -16,6 +17,7 @@ public class Hero extends Unit {
         this.name = "Sir Lancelot";
         this.textureHp = Assets.getInstance().getAtlas().findRegion("hp");
         this.weapon = new Weapon(Weapon.Type.SPEAR, 2, 2);
+        this.armour = new Armour(Armour.Type.SHIELD, new int[]{1, 2, 2, 1, 1});
     }
 
     public void update(float dt) {
