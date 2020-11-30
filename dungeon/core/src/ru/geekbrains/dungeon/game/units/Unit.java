@@ -196,7 +196,12 @@ public abstract class Unit implements Poolable {
 
         if (cellX == gc.getCursorX() && cellY == gc.getCursorY()) {
             stringHelper.setLength(0);
-            stringHelper.append("MP: ").append(stats.movePoints).append(" AP: ").append(stats.attackPoints).append(" Gold: ").append(gold);
+            stringHelper
+                    .append("MP: ").append(stats.movePoints).append("\n")
+                    .append("AP: ").append(stats.attackPoints).append("\n")
+                    .append("Gold: ").append(gold).append("\n")
+                    .append("Weapon: ").append(this.weapon.getType()).append("\n")
+                    .append("Armour: ").append("To do");
             font18.draw(batch, stringHelper, barX + 100, barY + 80, 60, 1, false);
         }
     }
