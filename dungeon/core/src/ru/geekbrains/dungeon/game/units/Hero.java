@@ -44,10 +44,8 @@ public class Hero extends Unit {
             Monster m = gc.getUnitController().getMonsterController().getMonsterInCell(gc.getCursorX(), gc.getCursorY());
             if (m != null && canIAttackThisTarget(m, 1)) {
                 attack(m);
-//                decreaseSatiety();
             } else {
                 goTo(gc.getCursorX(), gc.getCursorY());
-//                decreaseSatiety();
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -57,11 +55,17 @@ public class Hero extends Unit {
             int curX = gc.getCursorX();
             int curY = gc.getCursorY();
             if (gc.getGameMap().isTreeWithBerriesNextToMe(cellX, cellY) && Utils.isCellsAreNeighbours(curX, curY, cellX, cellY)) {
-                gc.getGameMap().collectBerries(curX, curY);
+                int satietyBoost = 5 * gc.getGameMap().collectBerries(curX, curY);
+                if (satiety + satietyBoost > 20) {
+                    satiety = 20;
+                } else {
+                    satiety += satietyBoost;
+                }
             }
         }
 
         updateGui();
+        System.out.println(satiety);
     }
 
     public void tryToEndTurn() {
