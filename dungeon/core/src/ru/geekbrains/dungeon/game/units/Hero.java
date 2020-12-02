@@ -9,9 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import lombok.Getter;
+import ru.geekbrains.dungeon.game.GameMap;
 import ru.geekbrains.dungeon.game.Weapon;
 import ru.geekbrains.dungeon.helpers.Assets;
 import ru.geekbrains.dungeon.game.GameController;
+import ru.geekbrains.dungeon.helpers.Utils;
 import ru.geekbrains.dungeon.screens.ScreenManager;
 
 @Getter
@@ -30,6 +32,10 @@ public class Hero extends Unit {
         this.createGui();
     }
 
+    public boolean canICollectBerries(){
+        return gc.getUnitController().isItMyTurn(this) && isStayStill() && gc.getGameMap().isTreeWithBerriesNextToMe(cellX,cellY);
+    }
+
     public void update(float dt) {
         super.update(dt);
         if (Gdx.input.justTouched() && canIMakeAction()) {
@@ -43,6 +49,14 @@ public class Hero extends Unit {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             tryToEndTurn();
         }
+        if (Gdx.input.justTouched() && canICollectBerries()){
+            int curX=gc.getCursorX();
+            int curY=gc.getCursorY();
+            if (gc.getGameMap().isTreeWithBerriesNextToMe(cellX, cellY) && Utils.isCellsAreNeighbours(curX, curY, cellX, cellY)){
+                gc.getGameMap().collectBerries(curX, curY);
+            }
+        }
+
         updateGui();
     }
 

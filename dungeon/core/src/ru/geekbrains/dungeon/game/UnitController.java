@@ -55,6 +55,7 @@ public class UnitController {
         for (int i = 0; i < getAllUnits().size(); i++) {
             getAllUnits().get(i).startRound();
         }
+        gc.getGameMap().growBerry();
     }
 
     public void nextTurn() {
