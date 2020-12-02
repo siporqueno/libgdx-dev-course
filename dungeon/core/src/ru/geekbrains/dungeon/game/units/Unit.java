@@ -168,6 +168,7 @@ public abstract class Unit implements Poolable {
             }
         }
         stats.attackPoints--;
+        decreaseSatiety();
 
         gc.getEffectController().setup(target.getCellCenterX(), target.getCellCenterY(), weapon.getFxIndex());
     }
@@ -182,6 +183,7 @@ public abstract class Unit implements Poolable {
                 cellX = targetX;
                 cellY = targetY;
                 stats.movePoints--;
+                decreaseSatiety();
                 gc.getGameMap().checkAndTakeDrop(this);
             }
         }
@@ -226,5 +228,8 @@ public abstract class Unit implements Poolable {
 
     public boolean amIBlocked() {
         return !(gc.isCellEmpty(cellX - 1, cellY) || gc.isCellEmpty(cellX + 1, cellY) || gc.isCellEmpty(cellX, cellY - 1) || gc.isCellEmpty(cellX, cellY + 1));
+    }
+
+    public void decreaseSatiety() {
     }
 }

@@ -19,6 +19,7 @@ import ru.geekbrains.dungeon.screens.ScreenManager;
 @Getter
 public class Hero extends Unit {
     private String name;
+    private int satiety;
 
     private Group guiGroup;
     private Label hpLabel;
@@ -30,10 +31,11 @@ public class Hero extends Unit {
         this.textureHp = Assets.getInstance().getAtlas().findRegion("hp");
         this.weapon = new Weapon(Weapon.Type.SPEAR, 2, 2, 0);
         this.createGui();
+        this.satiety = 20;
     }
 
-    public boolean canICollectBerries(){
-        return gc.getUnitController().isItMyTurn(this) && isStayStill() && gc.getGameMap().isTreeWithBerriesNextToMe(cellX,cellY);
+    public boolean canICollectBerries() {
+        return gc.getUnitController().isItMyTurn(this) && isStayStill() && gc.getGameMap().isTreeWithBerriesNextToMe(cellX, cellY);
     }
 
     public void update(float dt) {
@@ -42,17 +44,19 @@ public class Hero extends Unit {
             Monster m = gc.getUnitController().getMonsterController().getMonsterInCell(gc.getCursorX(), gc.getCursorY());
             if (m != null && canIAttackThisTarget(m, 1)) {
                 attack(m);
+//                decreaseSatiety();
             } else {
                 goTo(gc.getCursorX(), gc.getCursorY());
+//                decreaseSatiety();
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             tryToEndTurn();
         }
-        if (Gdx.input.justTouched() && canICollectBerries()){
-            int curX=gc.getCursorX();
-            int curY=gc.getCursorY();
-            if (gc.getGameMap().isTreeWithBerriesNextToMe(cellX, cellY) && Utils.isCellsAreNeighbours(curX, curY, cellX, cellY)){
+        if (Gdx.input.justTouched() && canICollectBerries()) {
+            int curX = gc.getCursorX();
+            int curY = gc.getCursorY();
+            if (gc.getGameMap().isTreeWithBerriesNextToMe(cellX, cellY) && Utils.isCellsAreNeighbours(curX, curY, cellX, cellY)) {
                 gc.getGameMap().collectBerries(curX, curY);
             }
         }
@@ -93,5 +97,11 @@ public class Hero extends Unit {
         this.guiGroup.setPosition(0, ScreenManager.WORLD_HEIGHT - 60);
 
         skin.dispose();
+    }
+
+    @Override
+    public void decreaseSatiety() {
+        if (satiety > 0) satiety--;
+        else this.stats.hp--;
     }
 }
