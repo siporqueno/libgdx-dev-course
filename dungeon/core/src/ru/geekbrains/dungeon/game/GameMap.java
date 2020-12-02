@@ -83,10 +83,17 @@ public class GameMap {
         return true;
     }
 
-    public void render(SpriteBatch batch) {
+    public void renderGround(SpriteBatch batch) {
         for (int i = 0; i < CELLS_X; i++) {
             for (int j = CELLS_Y - 1; j >= 0; j--) {
                 batch.draw(grassTexture, i * CELL_SIZE, j * CELL_SIZE);
+            }
+        }
+    }
+
+    public void renderObjects(SpriteBatch batch) {
+        for (int i = 0; i < CELLS_X; i++) {
+            for (int j = CELLS_Y - 1; j >= 0; j--) {
                 if (data[i][j].type == CellType.TREE) {
                     batch.draw(treesTextures[data[i][j].index], i * CELL_SIZE, j * CELL_SIZE);
                 }

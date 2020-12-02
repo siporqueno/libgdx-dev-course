@@ -11,10 +11,12 @@ public class Weapon {
     Type type;
     int damage;
     int radius;
+    int fxIndex;
 
-    public Weapon(Type type, int damage, int radius) {
+    public Weapon(Type type, int damage, int radius, int fxIndex) {
         this.type = type;
         this.damage = damage;
         this.radius = radius;
+        this.fxIndex = fxIndex;
     }
 }
